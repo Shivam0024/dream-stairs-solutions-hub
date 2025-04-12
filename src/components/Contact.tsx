@@ -93,7 +93,7 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="py-20 bg-white" id="contact-section">
+    <section id="contact" className="py-20 bg-white">
       <div className={`container mx-auto px-4 md:px-6 transition-all duration-1000 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         <div className="text-center mb-16">
           <h2 className="section-heading">Contact Us</h2>
@@ -103,10 +103,10 @@ const Contact = () => {
         </div>
         
         <div className="grid md:grid-cols-2 gap-12">
-          <div className="transform transition-all duration-500 hover:shadow-xl rounded-lg p-6">
+          <div className="transform transition-all duration-500 hover:shadow-xl rounded-lg p-6 animate-fade-in">
             <h3 className="font-serif text-2xl font-semibold mb-6">Get In Touch</h3>
             {isSubmitted ? (
-              <div className="flex flex-col items-center justify-center h-[400px] text-center">
+              <div className="flex flex-col items-center justify-center h-[400px] text-center animate-scale-in">
                 <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
                   <Check className="text-green-600" size={30} />
                 </div>
@@ -126,7 +126,7 @@ const Contact = () => {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       required
-                      className="transition-all focus:border-dreamstair-accent"
+                      className="transition-all focus:border-dreamstair-accent hover:border-dreamstair-accent/70"
                     />
                   </div>
                   <div>
@@ -138,15 +138,15 @@ const Contact = () => {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
-                      className="transition-all focus:border-dreamstair-accent"
+                      className="transition-all focus:border-dreamstair-accent hover:border-dreamstair-accent/70"
                     />
                   </div>
                 </div>
                 
                 <div>
-                  <label htmlFor="workLocation" className="block mb-2 text-sm font-medium">Work Location</label>
+                  <label htmlFor="subject" className="block mb-2 text-sm font-medium">Work Location</label>
                   <Select onValueChange={handleLocationChange} value={workLocation}>
-                    <SelectTrigger className="w-full">
+                    <SelectTrigger className="w-full transition-all focus:border-dreamstair-accent hover:border-dreamstair-accent/70">
                       <SelectValue placeholder="Select work location" />
                     </SelectTrigger>
                     <SelectContent>
@@ -177,7 +177,7 @@ const Contact = () => {
                   <Textarea 
                     id="message" 
                     placeholder="Tell us about your project..." 
-                    className="h-40 transition-all focus:border-dreamstair-accent" 
+                    className="h-40 transition-all focus:border-dreamstair-accent hover:border-dreamstair-accent/70" 
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     required
@@ -185,7 +185,7 @@ const Contact = () => {
                 </div>
                 <Button 
                   type="submit"
-                  className="bg-dreamstair-accent hover:bg-dreamstair-accent/90 text-black w-full py-6 text-lg transition-all duration-300 hover:shadow-lg hover:translate-y-[-2px] flex items-center justify-center gap-2"
+                  className="bg-dreamstair-accent hover:bg-dreamstair-accent/90 text-black w-full py-6 text-lg transition-all duration-300 hover:shadow-lg hover:translate-y-[-2px] flex items-center justify-center gap-2 btn-shine"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? (
@@ -201,7 +201,7 @@ const Contact = () => {
             )}
           </div>
           
-          <div className="transform transition-all duration-500 hover:shadow-xl rounded-lg">
+          <div className="transform transition-all duration-500 hover:shadow-xl rounded-lg animate-fade-in">
             <h3 className="font-serif text-2xl font-semibold mb-6">Contact Information</h3>
             <div className="bg-dreamstair-light p-8 rounded-lg shadow-md h-full transition-all duration-300 hover:shadow-xl">
               <div className="space-y-8">
