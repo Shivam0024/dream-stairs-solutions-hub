@@ -1,9 +1,10 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Phone, Mail, MapPin, Clock, SendIcon, Check } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import emailjs from 'emailjs-com';
 import { 
   Select,
   SelectContent,
@@ -14,6 +15,11 @@ import {
   SelectValue
 } from "@/components/ui/select";
 
+// EmailJS configuration
+const EMAILJS_SERVICE_ID = "service_id"; // Replace with your Service ID
+const EMAILJS_TEMPLATE_ID = "template_id"; // Replace with your Template ID
+const EMAILJS_USER_ID = "public_key"; // Replace with your Public Key
+
 const Contact = () => {
   const [workLocation, setWorkLocation] = useState("");
   const [tentativePrice, setTentativePrice] = useState("");
@@ -23,6 +29,7 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -71,12 +78,35 @@ const Contact = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      // Prepare template parameters
+      const templateParams = {
+        to_email: "iitianshivam0909@gmail.com",
+        from_name: name,
+        from_email: email,
+        work_location: workLocation,
+        price_range: tentativePrice,
+        message: message
+      };
+      
+      // Send email using EmailJS
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        templateParams,
+        EMAILJS_USER_ID
+      );
+      
+      // Show success message
+      toast({
+        title: "Message Sent Successfully",
+        description: "Thank you for contacting us. We'll get back to you shortly.",
+      });
+      
       setIsSubmitting(false);
       setIsSubmitted(true);
       
@@ -88,14 +118,22 @@ const Contact = () => {
         setWorkLocation("");
         setTentativePrice("");
         setIsSubmitted(false);
-      }, 3000);
-    }, 1500);
+      }, 5000);
+    } catch (error) {
+      console.error("Failed to send email:", error);
+      setIsSubmitting(false);
+      toast({
+        title: "Message Failed to Send",
+        description: "There was an error sending your message. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
     <section id="contact" className="py-20 bg-white">
       <div className={`container mx-auto px-4 md:px-6 transition-all duration-1000 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 animate-fade-in">
           <h2 className="section-heading">Contact Us</h2>
           <p className="mt-4 text-dreamstair-muted text-lg max-w-3xl mx-auto">
             Reach out to discuss your project requirements or schedule a consultation.
@@ -103,11 +141,11 @@ const Contact = () => {
         </div>
         
         <div className="grid md:grid-cols-2 gap-12">
-          <div className="transform transition-all duration-500 hover:shadow-xl rounded-lg p-6 animate-fade-in">
+          <div className="transform transition-all duration-500 hover:shadow-xl rounded-lg p-6 animate-fade-in hover-lift">
             <h3 className="font-serif text-2xl font-semibold mb-6">Get In Touch</h3>
             {isSubmitted ? (
               <div className="flex flex-col items-center justify-center h-[400px] text-center animate-scale-in">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4 animate-pulse-subtle">
                   <Check className="text-green-600" size={30} />
                 </div>
                 <h4 className="text-xl font-medium mb-2">Thank You!</h4>
@@ -118,8 +156,8 @@ const Contact = () => {
             ) : (
               <form className="space-y-6" onSubmit={handleSubmit}>
                 <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <label htmlFor="name" className="block mb-2 text-sm font-medium">Name</label>
+                  <div className="group">
+                    <label htmlFor="name" className="block mb-2 text-sm font-medium group-hover:text-dreamstair-accent transition-colors">Name</label>
                     <Input 
                       id="name" 
                       placeholder="Your name" 
@@ -129,8 +167,8 @@ const Contact = () => {
                       className="transition-all focus:border-dreamstair-accent hover:border-dreamstair-accent/70"
                     />
                   </div>
-                  <div>
-                    <label htmlFor="email" className="block mb-2 text-sm font-medium">Email</label>
+                  <div className="group">
+                    <label htmlFor="email" className="block mb-2 text-sm font-medium group-hover:text-dreamstair-accent transition-colors">Email</label>
                     <Input 
                       id="email" 
                       type="email" 
@@ -143,8 +181,8 @@ const Contact = () => {
                   </div>
                 </div>
                 
-                <div>
-                  <label htmlFor="subject" className="block mb-2 text-sm font-medium">Work Location</label>
+                <div className="group">
+                  <label htmlFor="subject" className="block mb-2 text-sm font-medium group-hover:text-dreamstair-accent transition-colors">Work Location</label>
                   <Select onValueChange={handleLocationChange} value={workLocation}>
                     <SelectTrigger className="w-full transition-all focus:border-dreamstair-accent hover:border-dreamstair-accent/70">
                       <SelectValue placeholder="Select work location" />
@@ -172,8 +210,8 @@ const Contact = () => {
                   )}
                 </div>
                 
-                <div>
-                  <label htmlFor="message" className="block mb-2 text-sm font-medium">Message</label>
+                <div className="group">
+                  <label htmlFor="message" className="block mb-2 text-sm font-medium group-hover:text-dreamstair-accent transition-colors">Message</label>
                   <Textarea 
                     id="message" 
                     placeholder="Tell us about your project..." 
@@ -201,7 +239,7 @@ const Contact = () => {
             )}
           </div>
           
-          <div className="transform transition-all duration-500 hover:shadow-xl rounded-lg animate-fade-in">
+          <div className="transform transition-all duration-500 hover:shadow-xl rounded-lg animate-fade-in hover-lift">
             <h3 className="font-serif text-2xl font-semibold mb-6">Contact Information</h3>
             <div className="bg-dreamstair-light p-8 rounded-lg shadow-md h-full transition-all duration-300 hover:shadow-xl">
               <div className="space-y-8">
@@ -222,7 +260,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h4 className="text-lg font-medium mb-1">Email</h4>
-                    <p className="text-dreamstair-muted">info@dreamstairs.com</p>
+                    <p className="text-dreamstair-muted">iitianshivam0909@gmail.com</p>
                     <p className="text-dreamstair-muted">projects@dreamstairs.com</p>
                   </div>
                 </div>

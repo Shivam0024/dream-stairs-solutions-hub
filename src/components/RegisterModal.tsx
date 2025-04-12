@@ -4,6 +4,12 @@ import { X, UserPlus, Mail, User, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import emailjs from 'emailjs-com';
+
+// EmailJS configuration
+const EMAILJS_SERVICE_ID = "service_id"; // Replace with your Service ID
+const EMAILJS_TEMPLATE_ID = "template_id"; // Replace with your Template ID
+const EMAILJS_USER_ID = "public_key"; // Replace with your Public Key
 
 interface RegisterModalProps {
   isOpen: boolean;
@@ -30,15 +36,46 @@ const RegisterModal = ({ isOpen, onClose }: RegisterModalProps) => {
     };
   }, [isOpen]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsRegistering(true);
 
-    // Simulate registration process
-    setTimeout(() => {
+    try {
+      // Store user info in localStorage
+      localStorage.setItem("dreamStairsUser", JSON.stringify({ name, email }));
+      
+      // Send notification email about new registration
+      const templateParams = {
+        to_email: "iitianshivam0909@gmail.com",
+        user_name: name,
+        user_email: email,
+        registration_time: new Date().toString()
+      };
+      
+      // Send email using EmailJS
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        templateParams,
+        EMAILJS_USER_ID
+      );
+      
+      // Show success message after a brief delay
+      setTimeout(() => {
+        setIsRegistering(false);
+        
+        toast({
+          title: "Registration successful!",
+          description: "Welcome to Dream Stairs. Explore our services.",
+        });
+        
+        onClose();
+      }, 1500);
+    } catch (error) {
+      console.error("Registration error:", error);
       setIsRegistering(false);
       
-      // Store user info in localStorage to remember they've registered
+      // Still register the user in localStorage even if email fails
       localStorage.setItem("dreamStairsUser", JSON.stringify({ name, email }));
       
       toast({
@@ -47,7 +84,7 @@ const RegisterModal = ({ isOpen, onClose }: RegisterModalProps) => {
       });
       
       onClose();
-    }, 1500);
+    }
   };
 
   if (!isOpen) return null;
