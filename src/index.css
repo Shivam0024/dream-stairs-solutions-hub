@@ -85,6 +85,30 @@
 
   body {
     @apply bg-background text-foreground;
+    scroll-behavior: smooth;
+  }
+
+  /* Add smooth scrolling for all elements */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #C8A870;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #b39661;
   }
 }
 
@@ -94,12 +118,20 @@
 
 .section-heading:after {
   content: '';
-  @apply absolute bottom-0 left-0 w-1/2 h-1 bg-dreamstair-accent;
+  @apply absolute bottom-0 left-0 w-1/2 h-1 bg-dreamstair-accent transition-all duration-300;
+}
+
+.section-heading:hover:after {
+  @apply w-full;
 }
 
 .process-arrow:after {
   content: '';
-  @apply absolute top-1/2 right-0 w-8 h-8 border-t-2 border-r-2 border-dreamstair-accent transform rotate-45 -translate-y-1/2 md:translate-x-1/2;
+  @apply absolute top-1/2 right-0 w-8 h-8 border-t-2 border-r-2 border-dreamstair-accent transform rotate-45 -translate-y-1/2 md:translate-x-1/2 transition-all duration-300;
+}
+
+.process-arrow:hover:after {
+  @apply border-t-3 border-r-3;
 }
 
 @media (max-width: 768px) {
@@ -110,4 +142,82 @@
 
 .gradient-overlay {
   background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7));
+}
+
+/* Additional Animations */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes pulse-subtle {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 3s ease-in-out infinite;
+}
+
+/* Hover Effects */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Image zoom effect */
+.img-zoom-container {
+  overflow: hidden;
+}
+
+.img-zoom {
+  transition: transform 0.5s ease;
+}
+
+.img-zoom:hover {
+  transform: scale(1.05);
+}
+
+/* Beautiful button effects */
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-shine:after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+  transform: rotate(30deg);
+  transition: transform 0.7s ease-in-out;
+}
+
+.btn-shine:hover:after {
+  transform: rotate(30deg) translate(100%, 100%);
 }
