@@ -1,10 +1,51 @@
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
+import { 
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select";
 
 const Contact = () => {
+  const [workLocation, setWorkLocation] = useState("");
+  const [tentativePrice, setTentativePrice] = useState("");
+
+  const handleLocationChange = (value: string) => {
+    setWorkLocation(value);
+    
+    // Set tentative price based on selection
+    switch(value) {
+      case "office-small":
+        setTentativePrice("$5,000 - $15,000");
+        break;
+      case "office-medium":
+        setTentativePrice("$15,000 - $30,000");
+        break;
+      case "office-large":
+        setTentativePrice("$30,000 - $100,000+");
+        break;
+      case "home-apartment":
+        setTentativePrice("$10,000 - $25,000");
+        break;
+      case "home-house":
+        setTentativePrice("$25,000 - $60,000");
+        break;
+      case "home-villa":
+        setTentativePrice("$60,000 - $200,000+");
+        break;
+      default:
+        setTentativePrice("");
+    }
+  };
+
   return (
     <section id="contact" className="py-20 bg-white">
       <div className="container mx-auto px-4 md:px-6">
@@ -29,10 +70,36 @@ const Contact = () => {
                   <Input id="email" type="email" placeholder="your.email@example.com" />
                 </div>
               </div>
+              
               <div>
-                <label htmlFor="subject" className="block mb-2 text-sm font-medium">Subject</label>
-                <Input id="subject" placeholder="How can we help?" />
+                <label htmlFor="workLocation" className="block mb-2 text-sm font-medium">Work Location</label>
+                <Select onValueChange={handleLocationChange}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select work location" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Office</SelectLabel>
+                      <SelectItem value="office-small">Small Office (up to 1000 sq.ft)</SelectItem>
+                      <SelectItem value="office-medium">Medium Office (1000-5000 sq.ft)</SelectItem>
+                      <SelectItem value="office-large">Large Office (5000+ sq.ft)</SelectItem>
+                    </SelectGroup>
+                    <SelectGroup>
+                      <SelectLabel>Home</SelectLabel>
+                      <SelectItem value="home-apartment">Apartment</SelectItem>
+                      <SelectItem value="home-house">House</SelectItem>
+                      <SelectItem value="home-villa">Luxury Villa</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+                
+                {tentativePrice && (
+                  <div className="mt-2 text-dreamstair-accent font-medium">
+                    Tentative price range: {tentativePrice}
+                  </div>
+                )}
               </div>
+              
               <div>
                 <label htmlFor="message" className="block mb-2 text-sm font-medium">Message</label>
                 <Textarea id="message" placeholder="Tell us about your project..." className="h-40" />
