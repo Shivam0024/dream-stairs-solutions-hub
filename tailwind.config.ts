@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -64,10 +63,12 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				dreamstair: {
-					'light': '#F6F6F7',
-					'dark': '#222222',
+					'light': '#F0F0F1',
+					'dark': '#1E1E1E',
 					'accent': '#C8A870',
-					'muted': '#8A898C'
+					'muted': '#6A6A6C',
+					'background': '#FFFFFF',
+					'text': '#333333'
 				}
 			},
 			fontFamily: {

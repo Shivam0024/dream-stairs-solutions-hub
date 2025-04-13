@@ -83,8 +83,9 @@
   }
 
   body {
-    @apply bg-background text-foreground;
-    scroll-behavior: smooth;
+    @apply bg-dreamstair-background text-dreamstair-text;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
   }
 
   /* Add smooth scrolling for all elements */
@@ -108,6 +109,11 @@
 
   ::-webkit-scrollbar-thumb:hover {
     background: #b39661;
+  }
+
+  /* Improve contrast for headings */
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-dreamstair-dark;
   }
 }
 
