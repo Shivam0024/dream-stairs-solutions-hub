@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,10 +16,10 @@ import {
   SelectValue
 } from "@/components/ui/select";
 
-// EmailJS configuration
-const EMAILJS_SERVICE_ID = "service_id"; // Replace with your Service ID
-const EMAILJS_TEMPLATE_ID = "template_id"; // Replace with your Template ID
-const EMAILJS_USER_ID = "public_key"; // Replace with your Public Key
+// EmailJS configuration - Replace with your actual credentials
+const EMAILJS_SERVICE_ID = "service_4vqlv09";
+const EMAILJS_TEMPLATE_ID = "template_r3ftbvf";
+const EMAILJS_USER_ID = "u_NYN7EM-2GGKpwLT"; 
 
 const Contact = () => {
   const [workLocation, setWorkLocation] = useState("");
@@ -42,7 +43,7 @@ const Contact = () => {
       { threshold: 0.1 }
     );
 
-    const element = document.getElementById("contact-section");
+    const element = document.getElementById("contact");
     if (element) observer.observe(element);
 
     return () => {
@@ -93,13 +94,22 @@ const Contact = () => {
         message: message
       };
       
+      console.log("Sending email with params:", templateParams);
+      
+      // Initialize EmailJS if not already initialized
+      if (!window.emailjs) {
+        emailjs.init(EMAILJS_USER_ID);
+      }
+      
       // Send email using EmailJS
-      await emailjs.send(
+      const result = await emailjs.send(
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID,
         templateParams,
         EMAILJS_USER_ID
       );
+      
+      console.log("Email sent successfully:", result);
       
       // Show success message
       toast({
