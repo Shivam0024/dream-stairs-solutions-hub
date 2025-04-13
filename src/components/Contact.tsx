@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,6 +19,9 @@ import {
 const EMAILJS_SERVICE_ID = "service_4vqlv09";
 const EMAILJS_TEMPLATE_ID = "template_r3ftbvf";
 const EMAILJS_USER_ID = "u_NYN7EM-2GGKpwLT"; 
+
+// Initialize EmailJS
+emailjs.init(EMAILJS_USER_ID);
 
 const Contact = () => {
   const [workLocation, setWorkLocation] = useState("");
@@ -95,11 +97,6 @@ const Contact = () => {
       };
       
       console.log("Sending email with params:", templateParams);
-      
-      // Initialize EmailJS if not already initialized
-      if (!window.emailjs) {
-        emailjs.init(EMAILJS_USER_ID);
-      }
       
       // Send email using EmailJS
       const result = await emailjs.send(
